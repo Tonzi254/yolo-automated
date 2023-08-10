@@ -1,0 +1,2 @@
+# The name of the backend image on docker hub
+backend_image: tonzi/yolo-backend:1.0.0

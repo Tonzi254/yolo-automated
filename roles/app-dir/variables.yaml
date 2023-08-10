@@ -1,0 +1,2 @@
+# The name of the app directory to be created on remote client host
+app_directory: /home/admin/yolo

@@ -1,0 +1,2 @@
+# The name of the frontend image on docker hub
+client_image: tonzi/yolo-client:1.0.0

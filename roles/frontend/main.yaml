@@ -1,0 +1,9 @@
+# Frontend tasks
+tasks:
+- name: "Build image from the frontend dockerhub file"
+  docker_image: 
+    name: "{{ client_image }}"
+    source: build
+    build:
+      path: /home/admin/yolo/client
+    state: present

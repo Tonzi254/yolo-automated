@@ -1,0 +1,11 @@
+tasks:
+    - name: Copy docker-compose file to app directory
+      template:
+        src: ./docker-compose.yaml
+        dest: "{{ app_directory }}/docker-compose.yaml"
+
+    - name: Start the Containers
+      shell: docker-compose -d
+      args:
+        executable: /bin/bash
+        chdir: "{{ app_directory }}"

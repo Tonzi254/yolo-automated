@@ -1,0 +1,7 @@
+# Create the app directory onto remote client host
+tasks:
+    - name: Create app directory
+      ansible.builtin.file:
+        path: "{{ app_directory }}"
+        state: directory
+        mode: '0755'

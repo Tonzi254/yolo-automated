@@ -1,0 +1,9 @@
+# Backend tasks
+tasks:
+- name: "Build image from the backend dockerhub file"
+  docker_image: 
+    name: "{{ backend_image }}"
+    source: build
+    build:
+      path: /home/admin/yolo/backend
+    state: present
