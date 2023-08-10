@@ -1,0 +1,88 @@
+---
+- name: Install Docker Engine on Debian 12
+  hosts: all
+  become: yes
+
+  vars:
+    client_image: tonzi/yolo-client:1.0.0
+    backend_image: tonzi/yolo-backend:1.0.0
+    app_directory: /opt/yolo
+
+  tasks:
+    - name: Install Required Packages
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg2
+          - lsb-release
+          - software-properties-common
+          - acl
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
+
+    - name: "Update Repository Cache"
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+        force_apt_get: true
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/debian bookworm stable
+        state: present
+
+    - name: Install Docker Engine
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose
+
+    - name: Create Docker Group
+      group:
+        name: "docker"
+        state: present
+
+    - name: Add User to Docker Group
+      user:
+        name: "admin"
+        group: docker
+        append: yes
+
+    - name: Start Docker Service
+      service:
+        name: docker
+        state: started
+
+    - name: Pull client image
+      shell: docker pull {{ client_image }}
+      args:
+        executable: /bin/bash
+
+    - name: Pull backend image
+      shell: docker pull {{ backend_image }}
+      args:
+        executable: /bin/bash
+
+    - name: Create app directory
+      ansible.builtin.file:
+        path: "{{ app_directory }}"
+        state: directory
+        mode: '0755'
+
+    - name: Copy docker-compose file to app directory
+      template:
+        src: ./docker-compose.yaml
+        dest: "{{ app_directory }}/docker-compose.yaml"
+
+    - name: Start the Containers
+      shell: docker-compose -d
+      args:
+        executable: /bin/bash
+        chdir: "{{ app_directory }}"
