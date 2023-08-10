@@ -1,0 +1,6 @@
+.env
+./backend/node_modules
+./client/node_modules
+.vscode
+.vagrant
+.vscode
