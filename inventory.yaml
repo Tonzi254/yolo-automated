@@ -1,0 +1,6 @@
+all:
+  hosts:
+    vm01:
+      ansible_host: 172.31.28.43
+    vm02:
+      ansible_host: 172.31.29.252
