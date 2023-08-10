@@ -1,39 +1,56 @@
 version: '3'
+
 services:
   frontend:
-    image: tonzi/yolo-client:1.0.0
+    container_name: frontend_container
+    image: {{ client_image }}
+    stdin_open: true # Keep the terminal running
+    ports:
+      - 4000:80
+    networks:
+      frontend-net:
+        ipv4_address: 172.50.0.101
+  backend:
+    container_name: backend_container
     ports:
       - 3000:3000
-    stdin_open: true
-    depends_on:
-      - backend
-    networks:
-      yolo-network:
-        ipv4_address: 172.20.0.10
-  backend:
-    image: tonzi/yolo-backend:1.0.0
-    ports:
-      - 5000:5000
+    image: {{ backend_image }}
     environment:
-      MONGODB_URI: 'mongodb://yolo:yolo123@172.20.0.1:27017/'
+      PORT: 3000
+      DATABASE_URL: 'mongodb://backend:backend@172.100.0.101:27017'
+    networks:
+      backend-net:
+        ipv4_address: 172.100.0.100
+      frontend-net:
+        ipv4_address: 172.50.0.100
     depends_on:
       - database
-    networks:
-      yolo-network:
-        ipv4_address: 172.20.0.20
+    volumes:
+      - .:/app
   database:
-    image: mongo
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: yolo
-      MONGO_INITDB_ROOT_PASSWORD: yolo123
+    container_name: backend_database
     ports:
       - 27017:27017
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: backend
+      MONGO_INITDB_ROOT_PASSWORD: backend
     networks:
-      yolo-network:
-        ipv4_address: 172.20.0.100
+      backend-net:
+        ipv4_address: 172.100.0.101
+    volumes:
+        - backend_volume:/data/db
 networks:
-  yolo-network:
+  backend-net:
     ipam:
       driver: default
       config:
-        - subnet: 172.20.0.0/16
+        - subnet: 172.100.0.0/16
+  frontend-net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.50.0.0/16
+
+volumes:
+  backend_volume:
