@@ -19,6 +19,7 @@
           - lsb-release
           - software-properties-common
           - acl
+          - ansible
 
     - name: Add Docker GPG key
       apt_key:
