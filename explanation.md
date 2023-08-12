@@ -29,6 +29,7 @@ Three containers below were successfully created and run using docker-compose fi
 
 To prevent the frontend from starting up first before the backend has started I added a frontend dependency on backend during execution and subsequently I also added a backend dependency on database to prevent the backend from starting before the database. 
 
-Once the docker-compose file is run it starts the database container which in turn triggers the backend container to start which in turn triggers the frontend container to run. The backend app waits for the database to start and then connects to it before allowing the frontend app to connect to the backend which connects it to the database.
+Once the docker-compose file is run it starts the database container which in turn triggers the backend container to start which in turn triggers the frontend container to run. The backend app starts the database and connects to it before allowing the frontend app to start which then subsequently connects to the database.
 
-I created a custom bridge yolo-network and put the three containers all in the same subnet (172.20.0.0/16) to facilitate the communication between frontend, backend and database which is crucial for proper functioning of the application. The front end is able to connect to the backend via the bridge and the backend is also able to connect to the database using the same bridge.
+# 6.Docker-Compose Networking
+I created two custom bridges frontend-net on subnet (172.100.0.0/16) and backend-net on subnet (172.50.0.0/16)
