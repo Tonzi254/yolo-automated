@@ -1,21 +1,23 @@
 # Requirements
-Make sure that you have the following installed and signed up for:
-1. Terraform
-2. AWS Cloud Account
+Make sure that you have the following installed:
+- [node](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-18-04) 
+- npm 
+- [MongoDB](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/) and start the mongodb service with `sudo service mongod start`
 
-## Navigate to the Terraform Folder inside Stage-Two Directory
- `cd stage-two/Terraform`
+## Navigate to the Client Folder 
+ `cd client`
 
-## Run the following command to initialize Terraform 
- `Terraform init`
+## Run the folllowing command to install the dependencies 
+ `npm install`
 
-## Run the following command to validate the script
- `Terraform validate`
+## Run the folllowing to start the app
+ `npm start`
 
- ## Run the following command to plan the deployment of the instances to AWS Cloud
- `Terraform plan`
+## Open a new terminal and run the same commands in the backend folder
+ `cd ../backend`
 
-## Run the folllowing to start the Terraform infrastructure instrumentation and invoke the Ansible Playbook
- `Terraform apply`
+ `npm install`
 
-### wait for the instances to finish being created automatically by Terraform, and Ansible to install the Docker packages, pull the images and start the containers on the created instances.
+ `npm start`
+
+ ### Go ahead and add a product (note that the price field only takes a numeric input)
